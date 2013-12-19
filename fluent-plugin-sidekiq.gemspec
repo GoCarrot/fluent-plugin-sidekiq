@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-sidekiq"
   spec.version       = Fluent::Plugin::Sidekiq::VERSION
   spec.authors       = ["Alex Scarborough"]
-  spec.email         = ["alex@gameclay.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.email         = ["alex@gocarrot.com"]
+  spec.description   = %q{Sidekiq plugin for Fluentd}
+  spec.summary       = spec.description
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "fluentd"
+  spec.add_dependency "redis"
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 end
