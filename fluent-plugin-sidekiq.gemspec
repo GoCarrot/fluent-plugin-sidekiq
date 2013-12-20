@@ -5,12 +5,12 @@ require 'fluent/plugin/sidekiq/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-sidekiq"
-  spec.version       = Fluent::Plugin::Sidekiq::VERSION
+  spec.version       = File.read("VERSION").strip
   spec.authors       = ["Alex Scarborough"]
   spec.email         = ["alex@gocarrot.com"]
   spec.description   = %q{Sidekiq plugin for Fluentd}
   spec.summary       = spec.description
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/GoCarrot/fluent-plugin-sidekiq"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

@@ -1,7 +1,7 @@
-require "fluent/plugin/sidekiq/version"
 require "redis"
 
 class Fluent::SidekiqOutput < Fluent::BufferedOutput
+  VERSION = "0.0.2"
   Fluent::Plugin.register_output("sidekiq", self)
 
   config_param :redis_url, :string, :default => 'redis://localhost:6379'
