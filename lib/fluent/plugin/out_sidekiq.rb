@@ -32,7 +32,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
 
   def write(chunk)
     client = redis_client
-    client.pipelined do
+    client.multi do
       chunk.msgpack_each do |tag, time, data|
         at = data.delete('at')
         if at
