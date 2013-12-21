@@ -20,7 +20,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
   end
 
   def redis_client
-    opts = {url: @redis_url}
+    opts = {url: @redis_url, driver: :hiredis}
     client = Redis.new(opts)
     if @redis_namespace
       require "redis/namespace"
