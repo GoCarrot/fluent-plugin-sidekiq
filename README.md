@@ -1,4 +1,4 @@
-# Fluent::Plugin::Sidekiq
+# Fluent::Plugin::Sidekiq, a plugin for [Fluentd](http://fluentd.org)
 
 TODO: Write a gem description
 
