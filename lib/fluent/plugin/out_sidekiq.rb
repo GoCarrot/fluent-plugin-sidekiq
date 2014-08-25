@@ -61,6 +61,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
     client = redis_client
     scheduled_jobs = []
     batches = []
+    manually_queue = []
 
     chunk.msgpack_each do |tag, time, data|
       at = data.delete('at')
@@ -68,16 +69,21 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
         scheduled_jobs << [at, data['payload']]
       else
         payload = JSON.parse(data['payload'])
-        queue = data.delete('queue')
-        klass = payload['class']
+        if payload['args'][0].kind_of?(Array) && payload['args'][0].all? { |a| a.kind_of?(Hash) }
+          queue = data.delete('queue')
+          klass = payload['class']
 
-        batch = batches.find { |b| b.acceptable_batch(queue, klass, max_batch_size) }
-        if !batch
-          batch = Batch.new(queue, klass)
-          batches << batch
+          batch = batches.find { |b| b.acceptable_batch(queue, klass, max_batch_size) }
+          if !batch
+            batch = Batch.new(queue, klass)
+            batches << batch
+          end
+
+          batch.add_to_batch(payload)
+        else
+          # Manual queuing
+          manually_queue << data
         end
-
-        batch.add_to_batch(payload)
       end
     end
 
@@ -86,6 +92,11 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
     end
     batches.each do |batch|
       batch.enqueue(client)
+    end
+    manually_queue.each do |data|
+      queue = data.delete('queue')
+      client.sadd('queues', queue)
+      client.lpush("queue:#{queue}", data['payload'])
     end
   end
 end
