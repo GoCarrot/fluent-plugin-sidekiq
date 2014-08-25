@@ -27,7 +27,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
     end
   end
 
-  VERSION = "0.0.3"
+  VERSION = "0.0.4"
   Fluent::Plugin.register_output("sidekiq", self)
 
   config_param :redis_url, :string, :default => 'redis://localhost:6379'
