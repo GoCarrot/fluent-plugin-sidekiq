@@ -32,7 +32,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
 
   config_param :redis_url, :string, :default => 'redis://localhost:6379'
   config_param :redis_namespace, :string, :default => nil
-  config_param :max_batch_size, :integer, :default => 5
+  config_param :max_batch_size, :integer, :default => 100
 
   def start
     super
