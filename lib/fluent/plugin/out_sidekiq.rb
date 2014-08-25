@@ -10,8 +10,8 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
       self.payload = {:class => k, :retry => true, :jid => "", :enqueued_at => 0, :args => [[]] }
     end
 
-    def acceptable_batch(q, c, max_size)
-      q == queue && c == klass && payload[:args][0].length < max_size
+    def acceptable_batch(q, c, p, max_size)
+      q == queue && c == klass && (payload[:args][0].length + p.length) <= max_size
     end
 
     def add_to_batch(p)
@@ -73,7 +73,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
           queue = data.delete('queue')
           klass = payload['class']
 
-          batch = batches.find { |b| b.acceptable_batch(queue, klass, max_batch_size) }
+          batch = batches.find { |b| b.acceptable_batch(queue, klass, payload['args'][0], max_batch_size) }
           if !batch
             batch = Batch.new(queue, klass)
             batches << batch
