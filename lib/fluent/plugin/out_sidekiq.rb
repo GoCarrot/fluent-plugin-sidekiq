@@ -18,7 +18,7 @@ class Fluent::SidekiqOutput < Fluent::BufferedOutput
       payload[:retry] = p['retry']
       payload[:jid] = p['jid']
       payload[:enqueued_at] = p['enqueued_at']
-      payload[:args][0] << p['args'][0][0]
+      payload[:args][0] += p['args'][0]
     end
 
     def enqueue(client)
